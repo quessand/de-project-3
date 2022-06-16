@@ -46,7 +46,14 @@ cur.execute(update_item)
 conn.commit()
 
 update_sales = \
-    '''
+    f'''
+    -- удаление записей с датой инкремента
+    DELETE FROM mart.f_sales
+    WHERE date_id = (
+        SELECT date_id
+        FROM mart.d_calendar
+        WHERE date_actual = '{gv.increment_date}');
+
     INSERT INTO mart.f_sales (date_id,item_id, customer_id, city_id, quantity, payment_amount, status)
     SELECT mart.d_calendar.date_id,staging.user_orders_log.item_id, staging.user_orders_log.customer_id, staging.user_orders_log.city_id, staging.user_orders_log.quantity, staging.user_orders_log.payment_amount, staging.user_orders_log.status
     FROM staging.user_orders_log
