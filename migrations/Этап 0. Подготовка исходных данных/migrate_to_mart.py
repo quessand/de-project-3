@@ -36,6 +36,7 @@ conn.commit()
 upload_item = \
     '''
     TRUNCATE TABLE mart.d_item CASCADE;
+    ALTER TABLE mart.d_item DROP COLUMN IF EXISTS category_id; --в моей последней версии образа этой колонки нет и все работает нормально
 
     INSERT INTO mart.d_item (item_id, item_name)
     SELECT DISTINCT item_id, item_name
